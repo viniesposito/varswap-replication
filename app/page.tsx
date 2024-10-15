@@ -14,6 +14,16 @@ import {
   Bar,
 } from "recharts";
 
+interface OptionData {
+  strike: number;
+  weight: number;
+}
+
+interface GammaData {
+  price: number;
+  gamma: number;
+}
+
 const Home: React.FC = () => {
   // Option Parameters
   const [spotPrice, setSpotPrice] = useState<number>(100);
@@ -25,10 +35,13 @@ const Home: React.FC = () => {
   const [maxStrike, setMaxStrike] = useState<number>(150);
   const [strikeStep, setStrikeStep] = useState<number>(5);
 
-  const [optionData, setOptionData] = useState<any[]>([]);
-  const [portfolioData, setPortfolioData] = useState<any[]>([]);
+  const [optionData, setOptionData] = useState<OptionData[]>([]);
+  const [portfolioData, setPortfolioData] = useState<GammaData[]>([]);
 
-  const generateData = () => {
+  const generateData = (): {
+    optionWeights: OptionData[];
+    portfolioGamma: GammaData[];
+  } => {
     const strikes: number[] = [];
     for (let k = minStrike; k <= maxStrike; k += strikeStep) {
       strikes.push((spotPrice * k) / 100);
@@ -200,7 +213,11 @@ const Home: React.FC = () => {
               <h2 className="text-xl font-semibold mb-4 text-gray-700">
                 Option Weights vs Strike
               </h2>
-              <BarChart width={400} height={300} data={optionData}>
+              <BarChart
+                width={400}
+                height={300}
+                data={optionData as OptionData[]}
+              >
                 <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
                 <XAxis
                   dataKey="strike"
@@ -229,7 +246,11 @@ const Home: React.FC = () => {
               <h2 className="text-xl font-semibold mb-4 text-gray-700">
                 Portfolio $Gamma Profile
               </h2>
-              <LineChart width={400} height={300} data={portfolioData}>
+              <LineChart
+                width={400}
+                height={300}
+                data={portfolioData as GammaData[]}
+              >
                 <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
                 <XAxis
                   dataKey="price"
