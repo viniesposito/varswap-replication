@@ -231,7 +231,13 @@ const Home: React.FC = () => {
                   tickFormatter={(value) => `${value.toFixed(0)}%`}
                   stroke="#6b7280"
                 />
-                <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />
+                {/* <Tooltip
+                  formatter={(
+                    value: number,
+                    name: string,
+                    props: { payload: { value: number } }
+                  ) => [`${(value as number).toFixed(2)}%`, name]}
+                /> */}
                 <Legend />
                 <Bar
                   dataKey="weight"
