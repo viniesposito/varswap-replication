@@ -129,7 +129,8 @@ const Home: React.FC = () => {
               with weights inversely proportional to the square of their strikes
               (1/K²). This weighting scheme creates a combination of options
               that, when hedged, maintains a constant exposure to realized
-              variance regardless of the underlying asset's price movements.
+              variance regardless of the underlying asset&apos;s price
+              movements.
             </p>
           </div>
 
