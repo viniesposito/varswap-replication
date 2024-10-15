@@ -49,12 +49,7 @@ const Home: React.FC = () => {
     const underlyingPrices = Array.from({ length: 201 }, (_, i) => i);
 
     let optionWeights = underlyingPrices.map((price) => {
-      const percentOfSpot = (price / spotPrice) * 100;
-      if (
-        percentOfSpot >= minStrike &&
-        percentOfSpot <= maxStrike &&
-        Math.abs((percentOfSpot - minStrike) % strikeStep) < 0.001
-      ) {
+      if (strikes.includes(price)) {
         return {
           strike: price,
           weight: 1 / (price * price),
@@ -65,6 +60,8 @@ const Home: React.FC = () => {
         weight: 0,
       };
     });
+
+    console.log("Generated option raw weights:", optionWeights);
 
     const totalWeight = optionWeights.reduce(
       (sum, option) => sum + option.weight,
@@ -123,6 +120,18 @@ const Home: React.FC = () => {
           <h1 className="text-3xl font-bold mb-8 text-gray-800 text-center">
             Variance Swap Replication Intuition
           </h1>
+
+          <div className="mb-8 text-gray-600">
+            <p className="text-sm">
+              This app seeks to illustrate the replication of a variance swap
+              using a portfolio of options. The key insight is that variance can
+              be captured by dynamically trading a portfolio of puts and calls,
+              with weights inversely proportional to the square of their strikes
+              (1/K²). This weighting scheme creates a combination of options
+              that, when hedged, maintains a constant exposure to realized
+              variance regardless of the underlying asset's price movements.
+            </p>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div className="p-4 border border-gray-200 rounded-lg shadow-sm">
@@ -279,6 +288,16 @@ const Home: React.FC = () => {
                 />
               </LineChart>
             </div>
+          </div>
+          <div className="mt-8 text-center text-gray-500 text-sm">
+            <a
+              href="https://github.com/viniesposito/varswap-replication"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-green-600"
+            >
+              View source code on GitHub
+            </a>
           </div>
         </div>
       </div>
